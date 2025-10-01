@@ -1,6 +1,6 @@
 {
-  "title": "Gemini 手办化插件配置",
-  "description": "请在这里填写 API Key 和图片尺寸设置",
+  "title": "Gemini 配置",
+  "description": "请填写 API Key",
   "type": "object",
   "properties": {
     "apikey": {
