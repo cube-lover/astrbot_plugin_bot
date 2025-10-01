@@ -1,26 +1,56 @@
 {
-  "title": "Gemini 配置",
-  "description": "请填写 API Key",
-  "type": "object",
-  "properties": {
     "apikey": {
-      "type": "string",
-      "title": "API Key",
-      "description": "请输入 MissQiu Gemini API 的 API Key",
-      "default": ""
+        "description": "MissQiu Gemini API Key",
+        "type": "string",
+        "title": "API Key",
+        "default": ""
     },
     "width": {
-      "type": "string",
-      "title": "图片宽度",
-      "description": "图片宽度，单位像素",
-      "default": "1024"
+        "description": "生成图片宽度（像素）",
+        "type": "string",
+        "title": "宽度",
+        "default": "1024"
     },
     "height": {
-      "type": "string",
-      "title": "图片高度",
-      "description": "图片高度，单位像素",
-      "default": "1024"
+        "description": "生成图片高度（像素）",
+        "type": "string",
+        "title": "高度",
+        "default": "1024"
+    },
+    "enhance": {
+        "description": "是否使用提示词增强",
+        "type": "bool",
+        "title": "增强提示词",
+        "default": false
+    },
+    "figurine_style": {
+        "description": "手办化生成风格",
+        "type": "string",
+        "title": "风格选择",
+        "options": [
+            "handmade_box",
+            "classic"
+        ],
+        "default": "handmade_box"
+    },
+    "prompts": {
+        "description": "手办化生成提示词",
+        "type": "object",
+        "items": {
+            "handmade_box": {
+                "description": "手办化版提示词",
+                "type": "text",
+                "editor_mode": true,
+                "editor_language": "markdown",
+                "default": "Please accurately transform the main subject in this photo into a realistic, masterpiece-like 1/7 scale PVC statue. A box should be placed behind the side of the statue: the front of the box has a large, clear transparent front window printed with the main artwork, product name, brand logo, barcode, and a small specification or authenticity verification panel. A small price tag sticker must also be attached to the corner of the box. Meanwhile, a computer monitor is placed at the back, and the monitor screen needs to display the ZBrush modeling process of this statue. In front of the packaging box, this statue should be placed on a round plastic base. The statue must have 3D dimensionality and a sense of realism, and the texture of the PVC material needs to be clearly represented. The statue should occupy a moderate portion of the scene, not too large, so that the surrounding packaging, tabletop, and background elements are clearly visible and well balanced in the composition. The tabletop and surrounding scene should have additional details, such as scattered drawing tools, reference sheets, notebooks, small stationery, coffee cups, or small decorative items, to make the environment richer but not cluttered. Ensure that these extra elements do not obscure the statue and maintain proper perspective. If the background can be set as an indoor scene, the effect will be even better."
+            },
+            "classic": {
+                "description": "经典版提示词",
+                "type": "text",
+                "editor_mode": true,
+                "editor_language": "markdown",
+                "default": "Please transform the main subject in this photo into a realistic miniature model in a studio setting, ensuring high detail, sharpness, and accurate pose and proportions, without inventing missing parts or faces."
+            }
+        }
     }
-  },
-  "required": ["apikey"]
 }
