@@ -12,28 +12,22 @@ import urllib.parse
     "https://github.com/yourrepo/astrbot_plugin_gemini"
 )
 class GeminiPlugin(Star):
-    """Gemini 手办化插件
+    """Gemini 手办化插件"""
 
-    触发方式：
-    发送一张图片并附带关键词 "手办化"
-    """
-
-    # ---------------------- 新版兼容 __init__ ----------------------
-    def __init__(self, context: Context, config: dict = None):
-        # 不调用 super().__init__(context) 避免 'Context' 对象没有 config
+    def __init__(self, context: Context):
+        # 不再访问 context.config
         self.context = context
-        self.config = config or {}
 
-        # ---------------------- 从配置读取 ----------------------
-        self.apikey = self.config.get("apikey", "")
-        self.width = self.config.get("width", "1024")
-        self.height = self.config.get("height", "1024")
+        # ---------------------- 从面板配置读取 ----------------------
+        # context.get("配置项", 默认值)
+        self.apikey = context.get("apikey", "")
+        self.width = context.get("width", "1024")
+        self.height = context.get("height", "1024")
 
         # 固定 text 提示词
         self.text = (
             "Please accurately transform the main subject in this photo into a realistic, masterpiece-like 1/7 scale PVC statue. "
-            "...(省略，和之前一样)..." 
-            "Please pay attention to the perspective relationship of near objects appearing larger and far objects smaller."
+            "...(省略，和之前一样)..."
         )
 
         # 初始化 aiohttp 会话
@@ -45,7 +39,7 @@ class GeminiPlugin(Star):
         except Exception as e:
             logger.exception("关闭 aiohttp 会话时出错: %s", e)
 
-    # 使用 regex 替代 keyword，避免新版本 AttributeError
+    # 使用 regex 代替 keyword，兼容新版 API
     @filter.regex(r"手办化")
     async def gen_image_by_keyword(self, event: AstrMessageEvent):
         await self._generate_image(event)
@@ -58,10 +52,9 @@ class GeminiPlugin(Star):
                 return
 
             img_url = img_list[0]
-            text = self.text
 
             params = {
-                "text": text,
+                "text": self.text,
                 "width": self.width,
                 "height": self.height,
                 "type": "tu",
@@ -84,5 +77,6 @@ class GeminiPlugin(Star):
         except Exception:
             logger.exception("处理手办化图生图时发生异常")
             yield event.plain_result("手办化失败，请稍后重试。")
+
 
 
