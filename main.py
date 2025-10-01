@@ -18,12 +18,15 @@ class GeminiPlugin(Star):
     发送一张图片并附带关键词 "手办化"
     """
 
-    def __init__(self, context: Context):
+    # ---------------------- 修正 __init__ 接收 config ----------------------
+    def __init__(self, context: Context, config: dict = None):
         super().__init__(context)
-        # ---------------------- 从面板配置读取 ----------------------
-        self.apikey = context.get_config("apikey", "")
-        self.width = context.get_config("width", "1024")
-        self.height = context.get_config("height", "1024")
+        self.config = config or {}
+
+        # ---------------------- 从配置读取 ----------------------
+        self.apikey = self.config.get("apikey", "")
+        self.width = self.config.get("width", "1024")
+        self.height = self.config.get("height", "1024")
 
         # 固定 text 提示词
         self.text = (
