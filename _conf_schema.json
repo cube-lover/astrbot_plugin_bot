@@ -1,0 +1,26 @@
+{
+  "title": "Gemini 手办化插件配置",
+  "description": "请在这里填写 API Key 和图片尺寸设置",
+  "type": "object",
+  "properties": {
+    "apikey": {
+      "type": "string",
+      "title": "API Key",
+      "description": "请输入 MissQiu Gemini API 的 API Key",
+      "default": ""
+    },
+    "width": {
+      "type": "string",
+      "title": "图片宽度",
+      "description": "图片宽度，单位像素",
+      "default": "1024"
+    },
+    "height": {
+      "type": "string",
+      "title": "图片高度",
+      "description": "图片高度，单位像素",
+      "default": "1024"
+    }
+  },
+  "required": ["apikey"]
+}
