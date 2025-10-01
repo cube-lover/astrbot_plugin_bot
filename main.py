@@ -1,8 +1,10 @@
 from astrbot.api.event import filter, AstrMessageEvent
-from astrbot.api.star import Context, Star, register
+from astrbot.api.star import Star, register
 from astrbot.api import logger
 import aiohttp
 import urllib.parse
+import json
+from pathlib import Path
 
 @register(
     "astrbot_plugin_gemini",
@@ -14,21 +16,28 @@ import urllib.parse
 class GeminiPlugin(Star):
     """Gemini 手办化插件"""
 
-    def __init__(self, context: Context):
-        # 不再访问 context.config
+    def __init__(self, context):
+        # 不调用 super().__init__() 避免 Context 没有 config
         self.context = context
 
-        # ---------------------- 从面板配置读取 ----------------------
-        # context.get("配置项", 默认值)
-        self.apikey = context.get("apikey", "")
-        self.width = context.get("width", "1024")
-        self.height = context.get("height", "1024")
+        # ---------------------- 从插件配置文件读取 ----------------------
+        self.data_dir = Path("data/plugins/astrbot_plugin_bot")
+        self.config_file = self.data_dir / "config.json"
+        self.apikey = ""
+        self.width = "1024"
+        self.height = "1024"
+
+        if self.config_file.exists():
+            try:
+                cfg = json.loads(self.config_file.read_text(encoding="utf-8"))
+                self.apikey = cfg.get("apikey", "")
+                self.width = str(cfg.get("width", "1024"))
+                self.height = str(cfg.get("height", "1024"))
+            except Exception as e:
+                logger.error("读取插件配置文件失败: %s", e)
 
         # 固定 text 提示词
-        self.text = (
-            "Please accurately transform the main subject in this photo into a realistic, masterpiece-like 1/7 scale PVC statue. "
-            "...(省略，和之前一样)..."
-        )
+        self.text = "Please accurately transform the main subject in this photo into a realistic, masterpiece-like 1/7 scale PVC statue. ...(省略)"
 
         # 初始化 aiohttp 会话
         self.session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=10))
@@ -39,7 +48,6 @@ class GeminiPlugin(Star):
         except Exception as e:
             logger.exception("关闭 aiohttp 会话时出错: %s", e)
 
-    # 使用 regex 代替 keyword，兼容新版 API
     @filter.regex(r"手办化")
     async def gen_image_by_keyword(self, event: AstrMessageEvent):
         await self._generate_image(event)
@@ -77,6 +85,7 @@ class GeminiPlugin(Star):
         except Exception:
             logger.exception("处理手办化图生图时发生异常")
             yield event.plain_result("手办化失败，请稍后重试。")
+
 
 
 
