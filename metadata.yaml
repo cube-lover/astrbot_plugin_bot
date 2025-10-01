@@ -3,5 +3,3 @@ description: 手办化插件  # 插件简短描述
 version: v1.0  # 插件版本号
 author: cube  # 作者
 repo: https://github.com/cube-lover/astrbot_plugin_bot  # 插件仓库地址
-main: main.py  # 入口 Python 文件
-
