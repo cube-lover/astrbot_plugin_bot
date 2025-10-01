@@ -1,34 +1,50 @@
-# AstrBot beautyvideo plugin
+# AstrBot beautyvideo 插件
 
-> 是一款QQ随机美女视频的AstrBot插件
-
----
-
-欢迎使用我的机器人哦😘[点我查看](https://qun.qq.Com/qunpro/robot/qunshare?biz_type=1&robot_uin=3889263267)
+> 随机返回一个美女视频的 AstrBot 插件
 
 ---
 
-
-## 支持功能：
-
-- 随机一个美女视频
+欢迎使用我的机器人哦 😘（使用前请确保已在插件目录中安装依赖）
 
 ---
 
-## 安装方法：
+## 功能
 
-复制链接 到astr webui端插件页面 使用链接安装即可
+- 随机返回一个美女视频（触发指令见下方）
+
+---
+
+## 安装方法
+
+1. 在 AstrBot WebUI 的插件管理页面，选择“通过仓库地址安装插件”。
+2. 填入本插件仓库地址：
 
 ```
-https://github.com/ovoox/zhiyu-astrbot-beautyvideo
+https://github.com/cube-lover/astrbot_plugin_bot
 ```
+
+3. 点击安装并在插件列表中启用插件。
 
 ---
 
-## 使用方法：
+## 使用方法
 
-##### 相关指令：
+触发指令（可在群聊或私聊中发送）：
 
-* 美女视频
-* 看视频
+- /美女视频
+- /看视频
+- /看美女
+
+---
+
+## 依赖
+
+本插件使用异步 HTTP 客户端 `aiohttp`，请确保已在插件目录下的 `requirements.txt` 中声明该依赖，AstrBot 安装插件时会读取并安装。
+
+---
+
+## 开发与调试
+
+- 修改代码后，在 AstrBot WebUI 的插件管理页面找到本插件，点击“管理”->“重载插件”以应用代码改动。
+- 插件在停止时会调用 `terminate`，请保证其中资源正确释放。
 
