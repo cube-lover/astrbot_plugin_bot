@@ -4,7 +4,13 @@ from astrbot.api import logger
 import aiohttp
 import urllib.parse
 
-@register("astrbot_plugin_gemini", "cube", "通过 MissQiu Gemini API 图生图生成手办化图片", "1.3.0", "https://github.com/yourrepo/astrbot_plugin_gemini")
+@register(
+    "astrbot_plugin_gemini",
+    "cube",
+    "通过 MissQiu Gemini API 图生图生成手办化图片",
+    "1.3.0",
+    "https://github.com/yourrepo/astrbot_plugin_gemini"
+)
 class GeminiPlugin(Star):
     """Gemini 手办化插件
 
@@ -15,9 +21,9 @@ class GeminiPlugin(Star):
     def __init__(self, context: Context):
         super().__init__(context)
         # ---------------------- 从面板配置读取 ----------------------
-        self.apikey = context.config.get("apikey", "")
-        self.width = context.config.get("width", "1024")
-        self.height = context.config.get("height", "1024")
+        self.apikey = context.get_config("apikey", "")
+        self.width = context.get_config("width", "1024")
+        self.height = context.get_config("height", "1024")
 
         # 固定 text 提示词
         self.text = (
@@ -51,7 +57,8 @@ class GeminiPlugin(Star):
         except Exception as e:
             logger.exception("关闭 aiohttp 会话时出错: %s", e)
 
-    @filter.keyword("手办化")
+    # 使用 regex 替代 keyword，避免新版本 AttributeError
+    @filter.regex(r"手办化")
     async def gen_image_by_keyword(self, event: AstrMessageEvent):
         await self._generate_image(event)
 
@@ -63,8 +70,6 @@ class GeminiPlugin(Star):
                 return
 
             img_url = img_list[0]
-
-            # 使用固定 text 提示词
             text = self.text
 
             params = {
